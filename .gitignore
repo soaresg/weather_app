@@ -45,3 +45,5 @@ app.*.map.json
 # OpenWeather Configs
 /lib/core/open_weather_var.dart
 
+# FVM Version Cache
+.fvm/

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:weather_app/core/models/temperature_entity.dart';
 import 'package:weather_app/core/models/weather_entity.dart';
 import 'package:weather_app/core/models/wind_entity.dart';
@@ -25,13 +23,13 @@ class WeatherInfoEntity {
 
   factory WeatherInfoEntity.fromJson(Map<String, dynamic> json) {
     return WeatherInfoEntity(
-      dateTime: json['dt_txt'],
-      temperature: TemperatureEntity.fromJson(jsonDecode(json['main'])),
-      weather: WeatherEntity.fromJson(jsonDecode(json['weather'])),
-      clouds: jsonDecode(json['clouds'])['all'],
-      wind: WindEntity.fromJson(jsonDecode(json['wind'])),
-      visibility: json['visibility'],
-      rain: json['rain'] == null ? 0 : jsonDecode(json['rain'])['3h'],
+      dateTime: DateTime.fromMillisecondsSinceEpoch(json['dt'] * 1000),
+      temperature: TemperatureEntity.fromJson(json['main']),
+      weather: WeatherEntity.fromJson(json['weather'][0]),
+      clouds: json['clouds']['all'].toDouble(),
+      wind: WindEntity.fromJson(json['wind']),
+      visibility: json['visibility'].toDouble(),
+      rain: json['rain'] == null ? 0 : json['rain']['3h'].toDouble(),
     );
   }
 }

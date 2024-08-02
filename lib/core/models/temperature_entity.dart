@@ -25,10 +25,10 @@ class TemperatureEntity {
       feelsLike: json['feels_like'],
       minTemperature: json['temp_min'],
       maxTemperature: json['temp_max'],
-      pressure: json['pressure'],
-      humidity: json['humidity'],
-      seaLevel: json['sea_level'],
-      groundLevel: json['grnd_level'],
+      pressure: json['pressure'].toDouble(),
+      humidity: json['humidity'].toDouble(),
+      seaLevel: json['sea_level'].toDouble(),
+      groundLevel: json['grnd_level'].toDouble(),
     );
   }
 }

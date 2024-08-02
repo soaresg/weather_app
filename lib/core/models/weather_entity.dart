@@ -11,10 +11,9 @@ class WeatherEntity {
 
   factory WeatherEntity.fromJson(Map<String, dynamic> json) {
     return WeatherEntity(
-      main: json['main'],
-      description: json['description'],
-      icon: json['icon'],
+      main: json['main'].toString(),
+      description: json['description'].toString(),
+      icon: json['icon'].toString(),
     );
   }
 }
-
