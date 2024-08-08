@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/core/models/city_entity.dart';
 import 'package:weather_app/core/models/weather_info_entity.dart';
 import 'package:weather_app/core/repositories/weather_repository.dart';
 
@@ -12,6 +13,7 @@ class HomeController {
 
   Position? position;
   List<WeatherInfoEntity?> currentWeather = [];
+  CityEntity? city;
 
   Future<bool> getCurrentPosition() async {
     bool serviceEnabled;
@@ -53,6 +55,8 @@ class HomeController {
 
       currentWeather = await weatherRepository.getWeather(
           position!.latitude, position!.longitude);
+
+      city = weatherRepository.city;
 
       return true;
     } catch (e) {

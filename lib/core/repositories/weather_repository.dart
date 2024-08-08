@@ -2,17 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/core/models/city_entity.dart';
 import 'package:weather_app/core/models/weather_info_entity.dart';
 import 'package:weather_app/core/open_weather_var.dart';
 import 'package:weather_app/core/repositories/weather_repository_interface.dart';
 
 class WeatherRepository implements WeatherRepositoryInterface {
+  CityEntity? city;
+
   @override
   Future<List<WeatherInfoEntity>> getWeather(
       double latitude, double longitude) async {
     try {
       final response = await http.get(
-        Uri.parse('$openWeatherUrl?lat=$latitude&lon=$longitude&appid=$apiKey'),
+        Uri.parse(
+            '$openWeatherUrl?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -27,6 +31,8 @@ class WeatherRepository implements WeatherRepositoryInterface {
         for (var data in weatherHourly) {
           listWeather.add(WeatherInfoEntity.fromJson(data));
         }
+
+        city = CityEntity.fromJson(responseDecoded["city"]);
 
         return listWeather;
       } else {

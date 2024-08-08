@@ -38,17 +38,78 @@ class _HomePageState extends State<HomePage> {
                   WeatherInfoEntity? currentWeather =
                       controller.todaysWeather();
 
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                            'Latitude: ${controller.position!.latitude} \n Longitude: ${controller.position!.longitude}'),
-                        const SizedBox(height: 8),
-                        Text(
-                            'Current Weather: ${currentWeather!.weather.main}'),
-                      ],
-                    ),
+                  return Stack(
+                    children: [
+                      Container(
+                        color: Colors.black.withOpacity(0.1),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 64,
+                            left: 16,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.place, size: 12),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(controller.city!.name),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${currentWeather!.temperature.temperature.toInt()}º',
+                                    style: const TextStyle(
+                                      fontSize: 128,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    child: RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Row(
+                                        children: [
+                                          Image.network(
+                                            'https://openweathermap.org/img/wn/${currentWeather.weather.icon}@2x.png',
+                                            scale: 2,
+                                          ),
+                                          Text(
+                                            currentWeather.weather.main,
+                                            style: const TextStyle(
+                                              fontSize: 24,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.elliptical(
+                                    MediaQuery.of(context).size.width, 100)),
+                          ),
+                          height: MediaQuery.of(context).size.height * 0.25,
+                        ),
+                      ),
+                    ],
                   );
                 }
               default:
