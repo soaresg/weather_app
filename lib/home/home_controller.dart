@@ -64,8 +64,8 @@ class HomeController {
     }
   }
 
-  WeatherInfoEntity? todaysWeather() {
-    return currentWeather.firstWhere(
+  Iterable<WeatherInfoEntity?> todaysWeather() {
+    return currentWeather.where(
       (e) =>
           DateFormat('yyyy-MM-dd').format(e!.dateTime) ==
           DateFormat('yyyy-MM-dd').format(DateTime.now()),

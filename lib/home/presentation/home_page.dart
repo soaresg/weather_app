@@ -20,6 +20,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    const gradientText = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.white,
+        Colors.transparent,
+      ],
+    );
+
     return Scaffold(
       body: FutureBuilder(
           future: controller.getWeather(),
@@ -35,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text('Erro ao buscar a localização atual'),
                   );
                 } else {
-                  WeatherInfoEntity? currentWeather =
+                  Iterable<WeatherInfoEntity?> currentWeather =
                       controller.todaysWeather();
 
                   return Stack(
@@ -64,10 +73,21 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    '${currentWeather!.temperature.temperature.toInt()}º',
-                                    style: const TextStyle(
-                                      fontSize: 128,
+                                  ShaderMask(
+                                    shaderCallback: (bounds) =>
+                                        gradientText.createShader(
+                                      Rect.fromLTWH(
+                                        0,
+                                        0,
+                                        bounds.width,
+                                        bounds.height,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      '${currentWeather.first!.temperature.temperature.toInt()}º',
+                                      style: const TextStyle(
+                                        fontSize: 128,
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -78,11 +98,11 @@ class _HomePageState extends State<HomePage> {
                                       child: Row(
                                         children: [
                                           Image.network(
-                                            'https://openweathermap.org/img/wn/${currentWeather.weather.icon}@2x.png',
+                                            'https://openweathermap.org/img/wn/${currentWeather.first!.weather.icon}@2x.png',
                                             scale: 2,
                                           ),
                                           Text(
-                                            currentWeather.weather.main,
+                                            currentWeather.first!.weather.main,
                                             style: const TextStyle(
                                               fontSize: 24,
                                             ),
@@ -100,13 +120,41 @@ class _HomePageState extends State<HomePage> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
+                          height: MediaQuery.of(context).size.height * 0.25,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.elliptical(
                                     MediaQuery.of(context).size.width, 100)),
                           ),
-                          height: MediaQuery.of(context).size.height * 0.25,
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.horizontal_rule,
+                                color: Colors.black.withOpacity(0.15),
+                                size: 32,
+                              ),
+                              const Text('Weather Today'),
+                              Row(
+                                children: [
+                                  Column(children: [
+                                    Image.network(
+                                      'https://openweathermap.org/img/wn/${currentWeather.skip(1).first!.weather.icon}@2x.png',
+                                      scale: 2,
+                                    ),
+                                    Text(
+                                      currentWeather
+                                          .skip(1)
+                                          .first!
+                                          .dateTime
+                                          .hour
+                                          .toString(),
+                                    ),
+                                  ]),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
