@@ -1,8 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:weather_app/core/core_module.dart';
 import 'package:weather_app/home/home_module.dart';
 import 'package:weather_app/splash/splash_page.dart';
 
 class AppModule extends Module {
+  @override
+  List<Module> get imports => [CoreModule()];
+
   @override
   void binds(i) {}
 

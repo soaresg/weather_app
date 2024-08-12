@@ -21,10 +21,10 @@ class TemperatureEntity {
 
   factory TemperatureEntity.fromJson(Map<String, dynamic> json) {
     return TemperatureEntity(
-      temperature: json['temp'],
-      feelsLike: json['feels_like'],
-      minTemperature: json['temp_min'],
-      maxTemperature: json['temp_max'],
+      temperature: json['temp'].toDouble(),
+      feelsLike: json['feels_like'].toDouble(),
+      minTemperature: json['temp_min'].toDouble(),
+      maxTemperature: json['temp_max'].toDouble(),
       pressure: json['pressure'].toDouble(),
       humidity: json['humidity'].toDouble(),
       seaLevel: json['sea_level'].toDouble(),
