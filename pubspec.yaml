@@ -1,5 +1,5 @@
 name: weather_app
-description: "A new Flutter project."
+description: "Weather App created with the OpenWeather API"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -26,6 +26,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
 
