@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:weather_app/core/models/city_entity.dart';
 import 'package:weather_app/core/models/weather_info_entity.dart';
 import 'package:weather_app/core/repositories/weather_repository.dart';
@@ -12,7 +11,8 @@ class HomeController {
   final weatherRepository = Modular.get<WeatherRepository>();
 
   Position? position;
-  List<WeatherInfoEntity?> currentWeather = [];
+  List<WeatherInfoEntity?> hourlyWeather = [];
+  WeatherInfoEntity? currentWeather;
   CityEntity? city;
 
   Future<bool> getCurrentPosition() async {
@@ -53,7 +53,7 @@ class HomeController {
     try {
       await getCurrentPosition();
 
-      currentWeather = await weatherRepository.getWeather(
+      hourlyWeather = await weatherRepository.getWeather(
           position!.latitude, position!.longitude);
 
       city = weatherRepository.city;
@@ -64,11 +64,16 @@ class HomeController {
     }
   }
 
-  Iterable<WeatherInfoEntity?> todaysWeather() {
-    return currentWeather.where(
-      (e) =>
-          DateFormat('yyyy-MM-dd').format(e!.dateTime) ==
-          DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    );
+  Future<bool> todaysWeather() async {
+    try {
+      await getCurrentPosition();
+
+      currentWeather = await weatherRepository.getCurrentWeather(
+          position!.latitude, position!.longitude);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
