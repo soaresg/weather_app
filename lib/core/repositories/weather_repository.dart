@@ -19,7 +19,7 @@ class WeatherRepository implements WeatherRepositoryInterface {
     try {
       final response = await http.get(
         Uri.parse(
-            '${variables.openWeatherUrl}?lat=$latitude&lon=$longitude&appid=${variables.apiKey}&units=metric'),
+            '${variables.openHourlyWeatherUrl}?lat=$latitude&lon=$longitude&appid=${variables.apiKey}&units=metric&lang=pt_br'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -43,7 +43,35 @@ class WeatherRepository implements WeatherRepositoryInterface {
         throw Exception(response.body);
       }
     } catch (e) {
-      debugPrint('Error to retrive data from de API: $e');
+      debugPrint('Error to retrieve data from the API: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<WeatherInfoEntity> getCurrentWeather(
+      double latitude, double longitude) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${variables.openCurrentWeatherUrl}?lat=$latitude&lon=$longitude&appid=${variables.apiKey}&units=metric&lang=pt_br'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> json = jsonDecode(response.body);
+        WeatherInfoEntity weather = WeatherInfoEntity.fromJson(json);
+
+        return weather;
+      } else {
+        debugPrint('Status Code ${response.statusCode}: ${response.body}');
+        throw Exception(response.body);
+      }
+    } catch (e) {
+      debugPrint('Error to retrive data from the API: $e');
       rethrow;
     }
   }

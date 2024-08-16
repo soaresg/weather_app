@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class OpenWeatherVariables {
-  String _openWeatherUrl = '';
+  String _openHourlyWeatherUrl = '';
+  String _openCurrentWeatherUrl = '';
   String _apiKey = '';
 
   final db = FirebaseFirestore.instance;
 
-  String get openWeatherUrl => _openWeatherUrl;
+  String get openHourlyWeatherUrl => _openHourlyWeatherUrl;
+  String get openCurrentWeatherUrl => _openCurrentWeatherUrl;
   String get apiKey => _apiKey;
 
   Future<void> getVariables() async {
@@ -18,7 +19,8 @@ class OpenWeatherVariables {
         data[doc.id] = doc.data();
       }
 
-      _openWeatherUrl = data['openweather']['url'];
+      _openHourlyWeatherUrl = data['openweather']['urlHourly'];
+      _openCurrentWeatherUrl = data['openweather']['urlCurrent'];
       _apiKey = data['openweather']['apikey'];
     });
   }
